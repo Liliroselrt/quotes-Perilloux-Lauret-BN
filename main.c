@@ -3,6 +3,13 @@
 //
 #include "quotes.h"
 #include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_CITATION_LENGTH 256
+#define FILENAME "citations.txt"
+
 
 int main() {
     char * quotes[MAX_QUOTES] = {
@@ -20,5 +27,35 @@ int main() {
 
     srand(time(NULL));
     print_random_quote(quotes);
+
+    CitationList list = {NULL, 0};
+    loadCitations(&list);
+    int choice;
+    do {
+        printf("\nMenu:\n");
+        printf("1. Ajouter une citation\n");
+        printf("2. Supprimer une citation\n");
+        printf("3. Afficher toutes les citations\n");
+        printf("4. Quitter\n");
+        printf("Votre choix : ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                addCitation(&list);
+                break;
+            case 2:
+                deleteCitation(&list);
+                break;
+            case 3:
+                displayCitations(&list);
+                break;
+            case 4:
+                printf("Au revoir !\n");
+                break;
+            default:
+                printf("Choix invalide.\n");
+        }
+    } while (choice != 4);
+    freeCitations(&list);
     return 0;
 }
